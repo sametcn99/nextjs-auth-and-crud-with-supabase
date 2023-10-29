@@ -11,6 +11,7 @@ export default function Avatar({ uid, url, size, onUpload }) {
   useEffect(() => {
     async function downloadImage(path) {
       try {
+        // Download image from Storage
         const { data, error } = await supabase.storage
           .from("avatars")
           .download(path);
@@ -18,20 +19,30 @@ export default function Avatar({ uid, url, size, onUpload }) {
           throw error;
         }
 
+        // Create url for the image
         const url = URL.createObjectURL(data);
+        // Set the url for the avatarUrl state variable
         setAvatarUrl(url);
       } catch (error) {
         console.log("Error downloading image: ", error);
       }
     }
 
+    // If there is a url for the image, download it
     if (url) downloadImage(url);
   }, [url, supabase]);
 
+  /**
+   * Uploads an avatar image to Supabase storage bucket.
+   * @param {Event} event - The event triggered by the user selecting an image to upload.
+   * @throws {Error} If no image is selected to upload.
+   * @throws {Error} If there is an error uploading the image to the storage bucket.
+   */
   const uploadAvatar = async (event) => {
     try {
       setUploading(true);
 
+      //The selected code is a conditional statement that checks if the user has selected any files to upload.
       if (!event.target.files || event.target.files.length === 0) {
         throw new Error("You must select an image to upload.");
       }
@@ -40,6 +51,7 @@ export default function Avatar({ uid, url, size, onUpload }) {
       const fileExt = file.name.split(".").pop();
       const filePath = `${uid}-${Math.random()}.${fileExt}`;
 
+      // Upload the file to the storage bucket.
       const { error: uploadError } = await supabase.storage
         .from("avatars")
         .upload(filePath, file);

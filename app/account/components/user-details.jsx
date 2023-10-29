@@ -14,27 +14,35 @@ export default function AccountForm({ session }) {
 
   const getProfile = useCallback(async () => {
     try {
+      // Set the loading state to true
       setLoading(true);
 
+      // Fetch the user's profile data
       const { data, error, status } = await supabase
         .from("profiles")
         .select(`full_name, username, website, avatar_url`)
         .eq("id", user?.id)
         .single();
 
+      // If there was an error with the request
       if (error && status !== 406) {
+        // Throw the error
         throw error;
       }
 
+      // If the data exists
       if (data) {
+        // Save their full name, username, website, and avatar URL
         setFullname(data.full_name);
         setUsername(data.username);
         setWebsite(data.website);
         setAvatarUrl(data.avatar_url);
       }
     } catch (error) {
+      // If there was an error, alert the user
       alert("Error loading user data!");
     } finally {
+      // Set the loading state to false
       setLoading(false);
     }
   }, [user, supabase]);
@@ -43,10 +51,13 @@ export default function AccountForm({ session }) {
     getProfile();
   }, [user, getProfile]);
 
+  // Update user's profile
   async function updateProfile({ username, website, avatar_url }) {
     try {
+      // Set loading state
       setLoading(true);
 
+      // Make API request
       const { error } = await supabase.from("profiles").upsert({
         id: user?.id,
         full_name: fullname,
@@ -65,7 +76,7 @@ export default function AccountForm({ session }) {
   }
 
   return (
-    <div className="flex flex-col justify-center min-h-screen animate-in">
+    <div className="flex flex-col justify-center mt-4 animate-in">
       <Avatar
         uid={user.id}
         url={avatar_url}

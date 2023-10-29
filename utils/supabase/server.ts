@@ -1,11 +1,13 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
+// 1. Create the Supabase client with the URL and key from the .env file
 export const createClient = (cookieStore: ReturnType<typeof cookies>) => {
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
+      // 2. Tell Supabase how to read and write cookies
       cookies: {
         get(name: string) {
           return cookieStore.get(name)?.value;

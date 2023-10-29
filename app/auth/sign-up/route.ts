@@ -10,10 +10,12 @@ export async function POST(request: Request) {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
 
+  // Create a new user with their email and password
   const { error } = await supabase.auth.signUp({
     email,
     password,
     options: {
+      // This is where the user will be redirected after signing up
       emailRedirectTo: `${requestUrl.origin}/auth/callback`,
     },
   });

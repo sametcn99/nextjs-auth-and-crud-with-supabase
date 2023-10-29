@@ -10,6 +10,12 @@ export async function POST(request: Request) {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
 
+  /**
+   * Sign in a user with their email and password using Supabase authentication.
+   * @param email - The email of the user to sign in.
+   * @param password - The password of the user to sign in.
+   * @returns An object containing the user session if successful, or an error if unsuccessful.
+   */
   const { error } = await supabase.auth.signInWithPassword({
     email,
     password,
