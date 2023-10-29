@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
   title: "Next.js Auth and CRUD with Supabase",
@@ -19,6 +20,7 @@ export default function RootLayout({
           <Navbar />
           {children}
         </main>
+        <Analytics />
       </body>
     </html>
   );
