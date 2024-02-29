@@ -20,6 +20,14 @@ export default function RootLayout({
           <Navbar />
           {children}
         </main>
+        <footer className="text-white text-center hover:underline">
+          <a
+            href="https://sametcc.me/nextjs-auth-and-crud-with-supabase"
+            target="_blank"
+          >
+            check out the source code
+          </a>
+        </footer>
         <Analytics />
       </body>
     </html>
